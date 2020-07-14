@@ -85,36 +85,48 @@ class Graph:
                     # if neighbor not in visited:
                         s.push(neighbor)
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, starting_vertex, visited=set()):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
 
         This should be done using recursion.
         """
-        #pass  # TODO
-        # make a stack
-        s = Stack()
-        # push on your starting node
-        s.push(starting_vertex)
-        # make a set to track if it was visited
-        visited = set()
-        # while stack is not empty
-        while s.size() > 0:
-            current_node = s.pop()
-            # if we have not visited the vertex before
-            if current_node not in visited:
-                # print(current node)
-                print(current_node)
-                visited.add(current_node)
-                # get neighbors
-                neighbors = self.get_neighbors(current_node)
-                # for each of the neibors
-                for neighbor in neighbors:
-                    # if neighbors not in set
-                    if neighbor not in visited:
-                        # add neibor to stack
-                        s.push(neighbor)
+        # #pass  # TODO
+        # # make a stack
+        # s = Stack()
+        # # push on your starting node
+        # s.push(starting_vertex)
+        # # make a set to track if it was visited
+        # visited = set()
+        # # while stack is not empty
+        # while s.size() > 0:
+        #     current_node = s.pop()
+        #     # if we have not visited the vertex before
+        #     if current_node not in visited:
+        #         # print(current node)
+        #         print(current_node)
+        #         visited.add(current_node)
+        #         # get neighbors
+        #         neighbors = self.get_neighbors(current_node)
+        #         # for each of the neibors
+        #         for neighbor in neighbors:
+        #             # if neighbors not in set
+        #             if neighbor not in visited:
+        #                 # add neibor to stack
+        #                 s.push(neighbor)
+
+        # mark this vertex as visited
+        visited.add(starting_vertex)
+        # print
+        print(starting_vertex)
+        # for each neighbor
+        neighbors = self.get_neighbors(starting_vertex)
+        for neighbor in neighbors:
+            # if it is no visited
+            if neighbor not in visited:
+            #recurse on the neighbot 
+                self.dft_recursive(neighbor, visited)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -123,37 +135,65 @@ class Graph:
         breath-first order.
         """
         # pass
-        # make a queue
+        # # make a queue
+        # q = Queue()
+        # # enqueue our starting node
+        # q.enqueue([starting_vertex])
+        # # make a set to track if it was visited
+        # visited = set()
+        # # while queue is not empty
+        # while q.size() > 0:
+        #     # dequeue whatever's at the front of our line, this is our current_node
+        #     path = q.dequeue()
+        #     # get the last vertixe on the path
+        #     node = path[-1]
+        #     print(node)
+        #     # if last vertix not in visited
+        #     if node not in visited:
+        #         # if node is equal to destination vertix
+        #         if node == destination_vertex:
+        #             # return path or deque
+        #             return path
+        #         # mark node as visited
+        #         visited.add(node)
+        #         # get neighbors
+        #         neighbors = self.get_neighbors(node)
+        #         # add path to neibords in the back of the queue
+        #         for neighbor in neighbors:
+        #             # copy the path
+        #             new_path = path.copy()
+        #             # append neibor to back
+        #             new_path.append(neighbor)
+        #             q.enqueue(new_path)
+
+        # make a queye
         q = Queue()
-        # enqueue our starting node
-        q.enqueue([starting_vertex])
-        # make a set to track if it was visited
+        # make a set to track the nodes
         visited = set()
-        # while queue is not empty
+        path = [starting_vertex]
+        # enqueue the starting node
+        q.enqueue(path)
+        # while the queue isn't empty
         while q.size() > 0:
-            # dequeue whatever's at the front of our line, this is our current_node
-            path = q.dequeue()
-            # get the last vertixe on the path
-            node = path[-1]
-            print(node)
-            # if last vertix not in visited
-            if node not in visited:
-                # if node is equal to destination vertix
-                if node == destination_vertex:
-                    # return path or deque
-                    return path
-                # mark node as visited
-                visited.add(node)
-                # get neighbors
-                neighbors = self.get_neighbors(node)
-                # add path to neibords in the back of the queue
+        ## dequee the node at the front of the line
+            current_path = q.dequeue()
+            current_node = current_path[-1]
+        ### if this node is out targte node
+            if current_node == destination_vertex:
+            #### return it!! return True
+                return current_path
+        ### if not visted
+            if current_node not in visited:
+        #### mark as visited
+                visited.add(current_node)
+        #### get neigghbots
+                neighbors = self.get_neighbors(current_node)
+                # for each neibor
                 for neighbor in neighbors:
-                    # copy the path
-                    new_path = path.copy()
-                    # append neibor to back
-                    new_path.append(neighbor)
-                    q.enqueue(new_path)
-        
+                    # add to queue
+                    q.enqueue(current_path + [neighbor])
+                
+
 
     def dfs(self, starting_vertex, destination_vertex):
         """
