@@ -56,7 +56,7 @@ class Graph:
                 for neighbor in neighbors:
         #### add to queue
                     q.enqueue(neighbor)
-  
+
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
@@ -92,8 +92,29 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
-        
+        #pass  # TODO
+        # make a stack
+        s = Stack()
+        # push on your starting node
+        s.push(starting_vertex)
+        # make a set to track if it was visited
+        visited = set()
+        # while stack is not empty
+        while s.size() > 0:
+            current_node = s.pop()
+            # if we have not visited the vertex before
+            if current_node not in visited:
+                # print(current node)
+                print(current_node)
+                visited.add(current_node)
+                # get neighbors
+                neighbors = self.get_neighbors(current_node)
+                # for each of the neibors
+                for neighbor in neighbors:
+                    # if neighbors not in set
+                    if neighbor not in visited:
+                        # add neibor to stack
+                        s.push(neighbor)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -101,28 +122,7 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        #pass  # TODO
-        # make a queue
-        q = Queue()
-        # enqueue our starting node
-        q.enqueue(starting_vertex)
-        # make a set to track if it was visited
-        visited = set()
-        # prev array with null values
-        prev = [None]
-        # while our queue isn't empty
-        while q.size() > 0:
-            # dequeue whatever's at the front of our line, this is our current_node
-            current_node = q.dequeue()
-            # mark as visited
-            visited.add(current_node)
-            # get its neighbors
-            neighbors = self.get_neighbors(current_node)
-            for neighbor in neighbors:
-                q.enqueue(neighbor)
-                # visited[neighbor] = True
-                prev[neighbor] = current_node
-        return prev
+        pass
 
     def dfs(self, starting_vertex, destination_vertex):
         """
