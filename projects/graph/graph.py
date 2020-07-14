@@ -191,9 +191,6 @@ class Graph:
                 for neighbor in neighbors:
                     # add to queue
                     q.enqueue(current_path + [neighbor])
-        
-                
-
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -201,7 +198,34 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        # pass  # TODO
+        # make a stack
+        s = Stack()
+        # make a set to track the nodes and set a path
+        visited = set()
+        path = [starting_vertex]
+        # push the starting node
+        s.push(path)
+        # while stack is not empty
+        while s.size() > 0:
+            # pop off the current path
+            current_path = s.pop()
+            # set current node to last node
+            current_node = current_path[-1]
+            # if the node is not our targte node
+            if current_node == destination_vertex:
+                # return current_path
+                return current_path
+            # if current node has not been visisted
+            if current_node not in visited:
+                # mark it as visisted
+                visited.add(current_node)
+                # get the neighbor
+                neighbors = self.get_neighbors(current_node)
+                # for each neighbor
+                for neighbor in neighbors:
+                # add to the stack (push)
+                    s.push(current_path + [neighbor])
 
     def dfs_recursive(self, vertex, destination_vertex, path=[], visited=set()):
         """
@@ -232,10 +256,6 @@ class Graph:
                 if result is not None:
             ###### return from here
                     return result
-
-        
-
-
 
 
 if __name__ == '__main__':
