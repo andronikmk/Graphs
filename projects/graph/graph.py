@@ -118,14 +118,13 @@ class Graph:
 
         # mark this vertex as visited
         visited.add(starting_vertex)
-        # print
         print(starting_vertex)
         # for each neighbor
         neighbors = self.get_neighbors(starting_vertex)
         for neighbor in neighbors:
-            # if it is no visited
+        ## if it's not visited
             if neighbor not in visited:
-            #recurse on the neighbot 
+        ### recurse on the neighbor
                 self.dft_recursive(neighbor, visited)
 
     def bfs(self, starting_vertex, destination_vertex):
@@ -192,6 +191,7 @@ class Graph:
                 for neighbor in neighbors:
                     # add to queue
                     q.enqueue(current_path + [neighbor])
+        
                 
 
 
@@ -203,7 +203,7 @@ class Graph:
         """
         pass  # TODO
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
+    def dfs_recursive(self, vertex, destination_vertex, path=[], visited=set()):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -211,7 +211,32 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        ## mark our node as visited
+        visited.add(vertex)
+
+        ## check if it's our target node, if so return
+        if vertex == destination_vertex:
+            return path
+
+        if len(path) == 0:
+            path.append(vertex)
+        
+        ## iterate over neighbors
+        neighbors = self.get_neighbors(vertex)
+        ### check if visited
+        for neighbor in neighbors:
+            if neighbor not in visited: 
+        #### if not, recurse with a path
+                result = self.dfs_recursive(neighbor, destination_vertex, path + [neighbor], visited)
+        ##### if this recursion returns a path,
+                if result is not None:
+            ###### return from here
+                    return result
+
+        
+
+
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
