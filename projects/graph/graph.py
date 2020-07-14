@@ -122,7 +122,38 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass
+        # pass
+        # make a queue
+        q = Queue()
+        # enqueue our starting node
+        q.enqueue([starting_vertex])
+        # make a set to track if it was visited
+        visited = set()
+        # while queue is not empty
+        while q.size() > 0:
+            # dequeue whatever's at the front of our line, this is our current_node
+            path = q.dequeue()
+            # get the last vertixe on the path
+            node = path[-1]
+            print(node)
+            # if last vertix not in visited
+            if node not in visited:
+                # if node is equal to destination vertix
+                if node == destination_vertex:
+                    # return path or deque
+                    return path
+                # mark node as visited
+                visited.add(node)
+                # get neighbors
+                neighbors = self.get_neighbors(node)
+                # add path to neibords in the back of the queue
+                for neighbor in neighbors:
+                    # copy the path
+                    new_path = path.copy()
+                    # append neibor to back
+                    new_path.append(neighbor)
+                    q.enqueue(new_path)
+        
 
     def dfs(self, starting_vertex, destination_vertex):
         """
