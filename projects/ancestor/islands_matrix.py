@@ -25,11 +25,13 @@ Plan
 
 """
 
+from util import Stack
+
 islands = [[0, 1, 0, 1, 0],
            [1, 1, 0, 1, 1],
            [0, 0, 1, 0, 0],
            [1, 0, 1, 0, 0],
-           [1, 1, 0, 0, 0]]
+           [1, 1, 0, 0, 0]] # 4 islands
 
 big_islands = [[1, 0, 0, 1, 1, 0, 1, 1, 0, 1],
                [0, 0, 1, 1, 0, 1, 0, 0, 0, 0],
@@ -40,23 +42,65 @@ big_islands = [[1, 0, 0, 1, 1, 0, 1, 1, 0, 1],
                [0, 0, 1, 0, 0, 1, 1, 0, 0, 0],
                [1, 0, 1, 1, 0, 0, 0, 1, 1, 0],
                [0, 1, 1, 0, 0, 0, 1, 1, 0, 0],
-               [0, 0, 1, 1, 0, 1, 0, 0, 1, 0]]
+               [0, 0, 1, 1, 0, 1, 0, 0, 1, 0]] # 13 islands
+
+def dft(row, col, islands, visited):
+    s = Stack()
+    s.push([row, col])
+    while s.size() > 0:
+        r, c = s.pop()
+
+        if not visited[r][c]:
+            visited[r][c] = True
+
+            for neighbor in get_neighbors(r, c, islands):
+                s.push(neighbor)
+
+def get_neighbors(row, col, islands):
+    neighbors = []
+    row_count = len(islands)
+    col_count = len(islands[0])
+
+    # checks north
+    if row > 0 and islands[row-1][col] == 1:
+        neighbors.append((row-1, col))
+    # checks south
+    if row < row_count - 1 and islands[row+1][col] == 1:
+        neighbors.append((row+1, col))
+    # check west
+    if col > 0 and islands[row][col-1] == 1:
+        neighbors.append((row, col-1))
+    # check east
+    if col < col_count - 1 and islands[row][col+1] == 1:
+        neighbors.append((row, col+1))
+
+    return neighbors
 
 def island_counter(islands):
+    row_count = len(islands)
+    col_count = len(islands[0])
+    
     # create a visited matrix
     visited = []
-
-    for _ in range(len(islands)):
-        visited.append([False]*len(islands[0]))
+    for _ in range(row_count):
+        visited.append([False] * col_count)
     
     island_count = 0
 
     # Walk through each cell of the matrix
-        # If it's not been visited
-            # If we hit a 1 on the islands
-                # Traverse and mark each as visited
-                # Increment counter
+    for row in range(row_count):
+        for col in range(col_count):
+            # If it's not been visited
+            if not visited[row][col]:
+                # If we hit a 1 on the islands
+                if islands[row][col] == 1:
+                    # Traverse and mark each as visited
+                    dft(row, col, islands, visited)
+                    # Increment counter
+                    island_count += 1
+    return island_count
 
+print(island_counter(islands))
 
 # stepNorth = row > 0 
 
