@@ -40,21 +40,19 @@ reverse_path = []
 # opposite direction
 reverse_dir = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 
-# Add room zero to rooms
 # so index is not out of range
 rooms[0] = player.current_room.get_exits()
 
 
 # While the number of rooms that you have visisted is less than the total amount of room
-    # and if player hasn't visisted the room
-        # get the exits
 while len(rooms) < len(room_graph)-1:
-    player_id = player.current_room.id
-    print("1. CURRENT ROOM ID: ", player_id)
-    if player_id not in rooms:
+    current_room_id = player.current_room.id
+    print("1. CURRENT ROOM ID: ", current_room_id)
+    # and if player hasn't visisted the node
+    if current_room_id not in rooms:
         # Node is looking around and asking which way is the exit.
         rooms[player.current_room.id] = player.current_room.get_exits()
-        print("2. EXITS: ", player.current_room.get_exits_string())
+        print("2. LOOK AROUND FOR EXITS: ", player.current_room.get_exits_string())
         # Grab the last direction traveled and it shoud be a possible exit.
         last_dir = reverse_path[-1]
         print("3. LAST DIRECTION TRAVELED: ", last_dir)
