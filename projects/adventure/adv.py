@@ -5,15 +5,9 @@ from world import World
 import random
 from ast import literal_eval
 
-
-# my imports
-from adv_graph import Graph
-from utils import Stack, Queue
-
 # Load world
 world = World()
-# Load graph
-graph = Graph()
+
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
@@ -35,30 +29,50 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-# create a map of the world and get length
-rooms_object = graph.dft(player.current_room)
-rooms_object_length = len(rooms_object)
+#################################################################################################
 
-# room ids to list
-room_lists = [k for k in rooms_object.keys()]
+# visited rooms
+rooms = {}
 
-while rooms_object_length > 1:
-    # current room position
-    current_room = room_lists[0]
-    next_room = room_lists[1]
-    current_room_n = rooms_object[current_room]
-    # if there are neighbors add them to the traversal path
-    if next_room in current_room_n.keys():
-        # append to traversal path
-        traversal_path.append(current_room_n[next_room])
-    else:
-        # use breadth first search to find shortest path if not neighbors
-        s_path = graph.bfs(current_room, next_room)
-        s_path_length = len(s_path)
-        while s_path_length > 1:
-            pass
+reverse_path = []
 
+# opposite direction
+reverse_dir = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 
+# Add room zero to rooms
+rooms[0] = player.current_room.get_exits()
+
+# While the number of rooms that you have visisted is less than the total amount of room
+    # and if player hasn't visisted the room
+        # get the exits
+while len(rooms) < len(room_graph)-1:
+    if player.current_room.id not in rooms:
+        # Add exits for current room to rooms
+        rooms[player.current_room.id] = player.current_room.get_exits()
+        print("These are the exits: ", player.current_room.get_exits_string())
+        # similar to prev in other assignment. getting last direction traveled
+        last_dir = reverse_path[-1]
+        print("Last direction traveld: ", last_dir)
+        rooms[player.current_room.id].remove(last_dir)
+
+    # when there are no more rooms left to traverse do
+    while len(rooms[player.current_room.id]) < 1:
+        r = reverse_path.pop()
+        print("Pop last dir in reverse path:", r)
+        # travel down the opposite path now
+        # after you add it to the traversal path
+        traversal_path.append(r)
+        player.travel(r)
+
+    exit_dir = rooms[player.current_room.id].pop(0)
+    print("First exit direction in room: ",exit_dir)
+    # append to traversal path
+    traversal_path.append(exit_dir)
+    # add reverse direction
+    reverse_path.append(reverse_dir[exit_dir])
+    player.travel(exit_dir)
+
+##################################################################################################
 
 # TRAVERSAL TEST
 visited_rooms = set()
