@@ -3,9 +3,10 @@ class Player:
         self.current_room = starting_room
     def travel(self, direction, show_rooms = False):
         next_room = self.current_room.get_room_in_direction(direction)
+        print("NEXT ROOM", next_room)
         if next_room is not None:
             x = self.current_room = next_room
-            print("## CURRENT ROOM:", x)
+            print("## TRAVEL METHOD:", x)
             if (show_rooms):
                 next_room.print_room_description(self)
         else:

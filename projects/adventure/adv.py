@@ -48,7 +48,9 @@ rooms[0] = player.current_room.get_exits()
 while len(rooms) < len(room_graph)-1:
     current_room_id = player.current_room.id
     print("1. CURRENT ROOM ID: ", current_room_id)
-    # and if player hasn't visisted the node
+    
+    
+    # 1. if you havent visisted all of the rooms.
     if current_room_id not in rooms:
         # Node is looking around and asking which way is the exit.
         rooms[player.current_room.id] = player.current_room.get_exits()
@@ -59,22 +61,29 @@ while len(rooms) < len(room_graph)-1:
         # And remove the last exit
         x = rooms[player.current_room.id].remove(last_dir)
         print("4. REMOVE LAST EXIT", x)
-    # when there are no more rooms left to traverse do
+    
+    # 2. When you have no more rooms left to  visit.
     while len(rooms[player.current_room.id]) < 1:
         r = reverse_path.pop()
-        print("5. POP LAST DIRECTION IN THE REVERSE STRING:", r)
+        print("5. POP LAST DIRECTION TRAVELED:", r)
         # travel down the opposite path now
         # after you add it to the traversal path
         traversal_path.append(r)
+        # using method to travel?
         player.travel(r)
 
+    # the first possible exit
     exit_dir = rooms[player.current_room.id].pop(0)
     print("6. TRAVEL DOWN FIRST POSSIBLE EXIT: ",exit_dir)
     # append to traversal path
     traversal_path.append(exit_dir)
-    # add reverse direction
+    print(traversal_path)
+    # add reverse direction 
     reverse_path.append(reverse_dir[exit_dir])
+    # travel down the path
     player.travel(exit_dir)
+
+
 
 ##################################################################################################
 
